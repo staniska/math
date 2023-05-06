@@ -2,9 +2,11 @@ import React, {useEffect, useState} from "react";
 import SimpleSum from "./exercises/SimpleSum";
 import './Main.css';
 import FractionSum from "./exercises/FractionSum";
+import SimpleMult from "./exercises/SimpleMult";
 
 export enum EExercise {
     simpleSum,
+    simpleMult,
     // fractionsSum,
 }
 
@@ -49,12 +51,17 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             return (<SimpleSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
 
-        return <SimpleSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+        if (exerciseType === EExercise.simpleMult) {
+            return (<SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
+        }
+
+        console.log('Arrr!!!')
+        return <SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
     }
 
 const getRandomExerciseType: () => EExercise =
     () => {
-        return Math.round(Math.random() * (Object.keys(EExercise).length / 2 - 1))
+        return Math.round(Math.random() * (Object.keys(EExercise).length / 2))
     }
 
 const ProgressLine: React.FC<{ scores: { act: number, req: number } }> =

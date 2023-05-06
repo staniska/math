@@ -1,37 +1,21 @@
 import React from "react";
 import Button from "./common/Button";
-import answerButtonHandler from "./common/answerButtonHandler";
-import {exec} from "child_process";
+import simpleClickHandler from "./common/simpleClickHandler";
+import filterSimpleResults from "./common/filterSimpleResults";
 
 const SimpleSum: React.FC<{ scores: number, requireScores: number, scoresSetter: React.Dispatch<React.SetStateAction<number>> }> =
     ({scores, requireScores, scoresSetter}) => {
 
         const clickHandler = (e: React.MouseEvent) => {
-
-            if ((e.target as HTMLElement).tagName !== 'BUTTON') return
-            if ((e.target as HTMLElement).className.match('btn')) return
-
-            const timeout = results[parseInt((e.target as HTMLButtonElement).value)].answer? 100: 2000
-
-            const buttons = Array.from(((e.target as HTMLButtonElement).closest('.simpleSum') as HTMLDivElement).querySelectorAll('button'))
-
-            buttons.forEach(btn => {
-                const idx = parseInt(btn.value)
-                btn.classList.add(results[idx].answer ? 'btnGreen' : 'btnRed')
-            })
-            setTimeout(() => {
-                buttons.forEach(btn => {
-                    const idx = parseInt(btn.value)
-                    btn.classList.remove(results[idx].answer ? 'btnGreen' : 'btnRed')
-                })
-                answerButtonHandler(
-                    results[parseInt((e.target as HTMLButtonElement).value)].answer,
-                    1,
-                    requireScores,
-                    scores,
-                    scoresSetter
-                )
-            }, timeout)
+            simpleClickHandler(
+                e,
+                'simpleSum',
+                results.findIndex(r => r.answer),
+                1,
+                scores,
+                requireScores,
+                scoresSetter
+            )
         }
 
         const limits = [-30, 30]
@@ -50,15 +34,7 @@ const SimpleSum: React.FC<{ scores: number, requireScores: number, scoresSetter:
             {value: Math.round(limits[0] + Math.random() * (limits[1] - limits[0])), answer: false},
         ]
 
-        results.forEach(res => {
-            if (res.value === results[0].value) res.answer = true
-        })
-
-        results.sort(() => Math.random() - 0.5)
-
-        results = results.filter((result,pos) => {
-            return results.findIndex(el => el.value === result.value) === pos
-        })
+        results = filterSimpleResults(results)
 
         return (
             <div className={'simpleSum'} onClick={clickHandler}>
