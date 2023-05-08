@@ -1,0 +1,21 @@
+.fractionSum {
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+
+.fractionSum_exercise {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.fractionSum_sign {
+    margin: auto 3px;
+}
+
+.fractionSum_bracket {
+    margin: auto 0;
+    font-size: 2em;
+    font-weight: 300;
+}

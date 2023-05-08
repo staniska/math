@@ -7,15 +7,22 @@ const SimpleMult: React.FC<{ scores: number, requireScores: number, scoresSetter
     ({scores, requireScores, scoresSetter}) => {
 
         const clickHandler = (e: React.MouseEvent) => {
-            simpleClickHandler(
+            const answer = simpleClickHandler(
                 e,
                 'simpleMult',
                 results.findIndex(r => r.answer),
-                2,
+                1,
                 scores,
                 requireScores,
                 scoresSetter
             )
+
+            if (!answer && answer !== null) {
+                const node = document.createElement('h3')
+                node.innerText = '' + terms[0] + sign + (terms[1] >= 0 ? terms[1] : `(${terms[1]})`) + '=' + trueValue
+                const mistakes = document.querySelector('.mistakes_list') as HTMLDivElement
+                mistakes.appendChild(node)
+            }
         }
 
         const limits = [-15, 20, -10, 15]
@@ -28,22 +35,23 @@ const SimpleMult: React.FC<{ scores: number, requireScores: number, scoresSetter
             {value: trueValue, answer: true},
             {value: terms[0] * (terms[1] - Math.round(Math.random() * 2)), answer: false},
             {value: terms[0] * (terms[1] - Math.round(Math.random() * 2)), answer: false},
-            {value: trueValue -5 + Math.round(Math.random() * 10), answer: false},
-            {value: trueValue -5 + Math.round(Math.random() * 10), answer: false},
+            {value: trueValue - 5 + Math.round(Math.random() * 10), answer: false},
+            {value: trueValue - 5 + Math.round(Math.random() * 10), answer: false},
             {value: trueValue * [-1, 2].sort(() => Math.random() - 0.5)[0], answer: false},
         ]
 
         results = filterSimpleResults(results)
 
         return (
-            <div className={'simpleMult'} onClick={clickHandler}>
+            <div className={'simpleMult'}>
                 <h3>
                     {terms[0]}{sign}{terms[1] >= 0 ? terms[1] : `(${terms[1]})`}
                 </h3>
-
-                {results.map((result, idx) => {
-                    return <Button key={idx} value={{resultType: 'TInt', results: [result.value]}} idx={idx}/>
-                })}
+                <div className={'answerButtons'}  onClick={clickHandler}>
+                    {results.map((result, idx) => {
+                        return <Button key={idx} value={{resultType: 'TInt', results: [result.value]}} idx={idx}/>
+                    })}
+                </div>
             </div>
 
 

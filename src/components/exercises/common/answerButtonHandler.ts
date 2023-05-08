@@ -4,12 +4,12 @@ const answerButtonHandler: (answer: boolean, weight: number, reqScores: number, 
     (answer, weight, reqScores, scores, scoresSetter) => {
         if (answer) {
             if (scores + weight < reqScores) {
-                scoresSetter(prev => scores + weight)
+                scoresSetter(() => scores + weight)
             } else {
-                scoresSetter(prev => reqScores)
+                scoresSetter(() => reqScores)
             }
         } else {
-            scoresSetter(prev => scores - weight)
+            scoresSetter(() => scores - 2 * weight)
         }
     }
 

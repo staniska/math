@@ -5,6 +5,16 @@
     margin: 10px;
 }
 
+.answerButton_fraction {
+    height: 80px;
+    width: 80px;
+    border-radius: 40px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btnGreen {
     box-shadow: 0 0 10px green;
     border: 2px solid green;

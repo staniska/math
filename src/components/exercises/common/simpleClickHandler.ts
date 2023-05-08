@@ -9,13 +9,16 @@ const simpleClickHandler:
      scores: number,
      requireScores: number,
      scoresSetter: React.Dispatch<React.SetStateAction<number>>
-    ) => void =
+    ) => boolean | null =
     (e,exerciseClassName, trueButtonId,exerciseWeight, scores, requireScores, scoresSetter) => {
 
-        const target = (e.target as HTMLElement)
+        let target = (e.target as HTMLElement)
+        if (target.tagName !== 'BUTTON' && target.closest('button') !== null) {
+            target = target.closest('button') as HTMLButtonElement
+        }
 
-        if (target.tagName !== 'BUTTON') return
-        if (target.className.match('btn')) return
+        if (target.tagName !== 'BUTTON') return null
+        if (target.className.match('btn')) return null
 
         const buttons = Array.from((target.closest(`.${exerciseClassName}`) as HTMLDivElement).querySelectorAll('button'))
 
@@ -34,6 +37,8 @@ const simpleClickHandler:
                 scoresSetter
             )
         }, timeout)
+
+        return answer
     }
 
 export default simpleClickHandler

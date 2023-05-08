@@ -1,0 +1,27 @@
+.fraction {
+    display: grid;
+    grid-template-areas: "sign int numerator"
+                         "sign int denominator";
+    margin: auto 3px auto 0;
+}
+
+.fraction_sign {
+    grid-area: sign;
+    margin: auto 3px;
+}
+
+.fraction_int {
+    grid-area: int;
+    margin: auto 3px;
+}
+
+.fraction_numerator {
+    grid-area: numerator;
+    margin: auto;
+    border-bottom: 3px solid black;
+}
+
+.fraction_denominator {
+    grid-area: denominator;
+    margin: auto;
+}

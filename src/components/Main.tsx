@@ -7,15 +7,13 @@ import SimpleMult from "./exercises/SimpleMult";
 export enum EExercise {
     simpleSum,
     simpleMult,
-    // fractionsSum,
+    fractionsSum,
 }
 
 export type TInt = number
 export type TFraction = {
-    Sign: '-' | '+',
-    Int: number,
-    Numerator: number,
-    Denominator: number
+    numerator: number,
+    denominator: number
 }
 export type TResult = {
     results: [TInt | TFraction],
@@ -29,7 +27,7 @@ const Main: React.FC = () => {
 
     useEffect(() => {
         if (scores < 0) {
-            setScores(prev => 0)
+            setScores(() => 0)
         }
     }, [scores])
 
@@ -37,6 +35,10 @@ const Main: React.FC = () => {
         <div>
             <ProgressLine scores={{act: scores, req: requireScores}}/>
             <Exercise exerciseType={null} scores={scores} requireScores={requireScores} scoresSetter={setScores}/>
+            <div className={'mistakes'}>
+                <div className={'mistakes_titile'}> Mistakes: </div>
+                <div className={'mistakes_list'}> </div>
+            </div>
         </div>
     )
 }
@@ -47,6 +49,10 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             exerciseType = getRandomExerciseType()
         }
 
+        if (exerciseType === EExercise.fractionsSum) {
+            return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+        }
+
         if (exerciseType === EExercise.simpleSum) {
             return (<SimpleSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
@@ -55,13 +61,13 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             return (<SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
 
-        console.log('Arrr!!!')
-        return <SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+        return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+
     }
 
 const getRandomExerciseType: () => EExercise =
     () => {
-        return Math.round(Math.random() * (Object.keys(EExercise).length / 2))
+        return Math.round(Math.random() * (Object.keys(EExercise).length / 2 + 2))
     }
 
 const ProgressLine: React.FC<{ scores: { act: number, req: number } }> =
