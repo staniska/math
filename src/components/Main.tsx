@@ -3,10 +3,12 @@ import SimpleSum from "./exercises/SimpleSum";
 import './Main.css';
 import FractionSum from "./exercises/FractionSum";
 import SimpleMult from "./exercises/SimpleMult";
+import FractionMult from "./exercises/FractionMult";
 
 export enum EExercise {
     simpleSum,
     simpleMult,
+    fractionMult,
     fractionsSum,
 }
 
@@ -53,6 +55,10 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
         }
 
+        if (exerciseType === EExercise.fractionMult) {
+            return <FractionMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+        }
+
         if (exerciseType === EExercise.simpleSum) {
             return (<SimpleSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
@@ -61,13 +67,17 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             return (<SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
 
-        return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
+
+
+        return <FractionMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
 
     }
 
 const getRandomExerciseType: () => EExercise =
     () => {
-        return Math.round(Math.random() * (Object.keys(EExercise).length / 2 + 2))
+        const random = Math.round(Math.pow(Math.random(), 0.4) * (Object.keys(EExercise).length / 2 - 1))
+        console.log(random)
+        return random
     }
 
 const ProgressLine: React.FC<{ scores: { act: number, req: number } }> =

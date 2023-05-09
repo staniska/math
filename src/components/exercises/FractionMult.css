@@ -1,0 +1,21 @@
+.fractionMult {
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+
+.fractionMult_exercise {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.fractionMult_sign {
+    margin: auto 3px;
+}
+
+.fractionMult_bracket {
+    margin: auto 0;
+    font-size: 2em;
+    font-weight: 300;
+}
