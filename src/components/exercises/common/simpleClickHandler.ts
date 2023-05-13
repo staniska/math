@@ -18,9 +18,9 @@ const simpleClickHandler:
         }
 
         if (target.tagName !== 'BUTTON') return null
-        if (target.className.match('btn')) return null
 
         const buttons = Array.from((target.closest(`.${exerciseClassName}`) as HTMLDivElement).querySelectorAll('button'))
+        buttons.forEach(b => b.disabled = true)
 
         const trueButton = buttons.filter(btn => parseInt(btn.value) === trueButtonId)[0]
         trueButton.classList.add('btnGreen')
@@ -29,6 +29,8 @@ const simpleClickHandler:
 
         setTimeout(() => {
             trueButton.classList.remove('btnGreen')
+            buttons.forEach(b => b.disabled = false)
+
             answerButtonHandler(
                 answer,
                 exerciseWeight,

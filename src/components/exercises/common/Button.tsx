@@ -1,4 +1,4 @@
-import {TFraction, TResult} from "../../Main";
+import {TFraction, TResult, TSimpleExpression} from "../../Main";
 import './Button.css'
 import Fraction from "./Fraction";
 import simplifyFraction from "./simplificationFraction";
@@ -10,6 +10,14 @@ const Button: React.FC<{ value: TResult, idx: number }> =
             return (
                 <button className={'answerButton_fraction'} value={idx}>
                     <Fraction f={simplifyFraction(value.results[0] as TFraction)}/>
+                </button>
+            )
+        }
+
+        if (value.resultType === 'TSimpleExpression') {
+            return (
+                <button className={'answerButton_simpleExpression'} value={idx}>
+                    {value.results[0] as TSimpleExpression}
                 </button>
             )
         }

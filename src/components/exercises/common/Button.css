@@ -15,6 +15,13 @@
     align-items: center;
 }
 
+.answerButton_simpleExpression {
+    height: 40px;
+    border-radius: 20px;
+    padding: 0 1em;
+    margin: 2em;
+}
+
 .btnGreen {
     box-shadow: 0 0 10px green;
     border: 2px solid green;

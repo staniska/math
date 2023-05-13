@@ -1,4 +1,4 @@
-const filterSimpleResults: (results: {value: number, answer: boolean}[]) => ({value: number, answer: boolean}[]) =
+const filterSimpleResults: <T extends number | string>(results: {value: T, answer: boolean}[]) => ({value: T, answer: boolean}[]) =
     (results) => {
         results.forEach(res => {
             if (res.value === results[0].value) res.answer = true

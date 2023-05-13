@@ -4,12 +4,14 @@ import './Main.css';
 import FractionSum from "./exercises/FractionSum";
 import SimpleMult from "./exercises/SimpleMult";
 import FractionMult from "./exercises/FractionMult";
+import SimplifyExpression1 from "./exercises/SimplifyExpression1";
 
 export enum EExercise {
     simpleSum,
     simpleMult,
     fractionMult,
     fractionsSum,
+    simplifyExpression_1,
 }
 
 export type TInt = number
@@ -17,10 +19,13 @@ export type TFraction = {
     numerator: number,
     denominator: number
 }
+export type TSimpleExpression = string
 export type TResult = {
-    results: [TInt | TFraction],
+    results: [TInt | TFraction | TSimpleExpression],
     resultType: string,
 }
+
+
 
 const Main: React.FC = () => {
 
@@ -51,6 +56,8 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             exerciseType = getRandomExerciseType()
         }
 
+        // exerciseType = [0,1].sort(() => Math.random() - 0.5)[0]
+
         if (exerciseType === EExercise.fractionsSum) {
             return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
         }
@@ -67,7 +74,9 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
             return (<SimpleMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
 
-
+        if (exerciseType === EExercise.simplifyExpression_1) {
+            return (<SimplifyExpression1 scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
+        }
 
         return <FractionMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
 
@@ -75,9 +84,7 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
 
 const getRandomExerciseType: () => EExercise =
     () => {
-        const random = Math.round(Math.pow(Math.random(), 0.4) * (Object.keys(EExercise).length / 2 - 1))
-        console.log(random)
-        return random
+        return Math.round(Math.pow(Math.random(), 0.4) * (Object.keys(EExercise).length / 2 - 1))
     }
 
 const ProgressLine: React.FC<{ scores: { act: number, req: number } }> =
