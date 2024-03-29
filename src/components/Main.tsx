@@ -5,6 +5,8 @@ import FractionSum from "./exercises/FractionSum";
 import SimpleMult from "./exercises/SimpleMult";
 import FractionMult from "./exercises/FractionMult";
 import SimplifyExpression1 from "./exercises/SimplifyExpression1";
+import {DigitalFractionsExpression1} from "./exercises/DigitalFractionsExpression1";
+// import SimplifyExpression2 from "./exercises/SimplifyExpression2";
 
 export enum EExercise {
     simpleSum,
@@ -12,16 +14,30 @@ export enum EExercise {
     fractionMult,
     fractionsSum,
     simplifyExpression_1,
+    // simplifyExpression_2,
+    digitalFractionExpression_1,
 }
 
 export type TInt = number
+
+export type TDigitalFraction = {
+    value: number,
+    decimalDigits: number
+}
 export type TFraction = {
     numerator: number,
     denominator: number
 }
+
+export type TPow = {
+    type: 'letter' | 'scope' | 'number',
+    base: number | string | TPow,
+    power: number | TFraction
+}
+
 export type TSimpleExpression = string
 export type TResult = {
-    results: [TInt | TFraction | TSimpleExpression],
+    results: [TInt | TFraction | TSimpleExpression | TPow | TDigitalFraction],
     resultType: string,
 }
 
@@ -57,6 +73,7 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
         }
 
         // exerciseType = [0,1].sort(() => Math.random() - 0.5)[0]
+        // exerciseType = 5
 
         if (exerciseType === EExercise.fractionsSum) {
             return <FractionSum scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
@@ -76,6 +93,14 @@ const Exercise: React.FC<{ exerciseType: EExercise | null, scores: number, requi
 
         if (exerciseType === EExercise.simplifyExpression_1) {
             return (<SimplifyExpression1 scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
+        }
+
+        // if (exerciseType === EExercise.simplifyExpression_2) {
+        //     return (<SimplifyExpression2 scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
+        // }
+
+        if (exerciseType === EExercise.digitalFractionExpression_1) {
+            return (<DigitalFractionsExpression1 scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>)
         }
 
         return <FractionMult scores={scores} requireScores={requireScores} scoresSetter={scoresSetter}/>
