@@ -21,10 +21,11 @@ export const DigitalFractionsExpression1: React.FC<{ scores: number, requireScor
 
         enum EDigitalExpressionType {
             MultAdd,
-
+            DivideAdd,
         }
 
-        const type = Math.round(Math.random() * (Object.keys(EDigitalExpressionType).length / 2 - 1))
+        let type = Math.round(Math.random() * (Object.keys(EDigitalExpressionType).length / 2 - 1))
+        // type = 1
 
         if (type === EDigitalExpressionType.MultAdd) {
             let multResult = 0
@@ -40,7 +41,7 @@ export const DigitalFractionsExpression1: React.FC<{ scores: number, requireScor
                 dividers = Array(limits2[1] - limits2[0] + 1).fill(0)
                     .map((n, i) => limits2[0] + i)
                     .filter(n => n !== 0)
-                    .filter(n => (multResult / n) === Math.round(multResult / n))
+                    .filter((n:number) => (multResult / n) === Math.round(multResult / n))
                     .filter(n => Math.abs(n) > 10 && Math.abs(multResult / n) > 10)
                     .filter(n => n / 10 !== Math.round(n / 10) && multResult / n / 10 !== Math.round(multResult / n / 10))
                 if (dividers.length < 2) multResult = 0
@@ -63,17 +64,63 @@ export const DigitalFractionsExpression1: React.FC<{ scores: number, requireScor
 
             expression = `${expressionTerms[0]} * ${expressionTerms[1]} ${term > 0 ? '+' : '-'} ${expressionTerms[2]}`
         }
+        if (type === EDigitalExpressionType.DivideAdd) {
+            let divideResult = 0
+            let multipliers: number[] = []
+            while (Math.abs(divideResult) < 10) {
+                trueValue = generateValue([-60, 60], 1)
+                if (Math.abs(trueValue) < 5) continue
+                if (trueValue % 10 === 0) continue
+                do {
+                    divideResult = trueValue + generateValue(limits2, 1)
+                } while (Math.abs(divideResult) < 15)
+
+                if (Math.abs(trueValue - divideResult) < 15) {
+                    divideResult = 0
+                    continue
+                }
+                multipliers = Array(limits2[1]).fill(0)
+                    .map((n, i) => i + 1)
+                    .filter(n => divideResult * n % 10 === 0)
+                    .filter(n => n % 5 !== 0)
+                    .filter(n => n > 20 && n < 50)
+                    .filter(n => n * divideResult < 2000)
+                if (multipliers.length < 2) divideResult = 0
+            }
+            const term = trueValue - divideResult
+            const divider = (Math.random() > 0.5 ? (-1) : 1) * multipliers[Math.round(Math.random() * (multipliers.length - 1))]
+
+            expression = `${divideResult * divider} / ${divider} + ${term} = ${trueValue}`
+
+            const expressionTerms: string[] = [divideResult * divider, divider, term, trueValue]
+                .map((n, i) => {
+                    const divider = i === 0 || i === 3 ? 100 : 10
+                    return '' + n / divider
+                })
+            if (divider < 0) {
+                expressionTerms[1] = `(${expressionTerms[1]})`
+            }
+            if (term < 0) {
+                expressionTerms[2] = expressionTerms[2].substring(1)
+            }
+
+            expression = `${expressionTerms[0]} : ${expressionTerms[1]} ${term > 0 ? '+' : '-'} ${expressionTerms[2]}`
+            trueValue *= 10
+
+        }
+
+
         let answers: number[] =
 
-                    Array(30)
-                        .fill(0)
-                        .map(() => generateValue(limits, 10))
-                        .filter((v, i, a) => !a.filter((n, idx) => Math.abs(n) === Math.abs(v) && i !== idx).length)
-                        .slice(0, 4 + Math.round(Math.random() * 4))
+            Array(30)
+                .fill(0)
+                .map(() => generateValue(limits2, 1))
+                .filter((v, i, a) => !a.filter((n, idx) => Math.abs(n) === Math.abs(v) && i !== idx).length)
+                .map(v => v * 10)
+                .slice(0, 4 + Math.round(Math.random() * 4))
 
-            answers.splice(3, 0, trueValue)
-            answers = answers.sort(() => Math.random() - 0.5)
-            console.log(answers.indexOf(trueValue))
+        answers.splice(3, 0, trueValue)
+        answers = answers.sort(() => Math.random() - 0.5)
 
         const clickHandler = (e: React.MouseEvent) => {
             const answer = simpleClickHandler(
